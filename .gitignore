@@ -1,0 +1,8 @@
+.*.swp
+.swp
+
+*.pyc
+
+dist/*
+MANIFEST
+*.egg-info
