@@ -8,6 +8,7 @@ setup(
     author_email = "simon.knopp@pg.canterbury.ac.nz",
     url = "https://github.com/sijk/pygments-bitbake",
     description = "Pygments lexer for BitBake files.",
+    long_description = open('README.rst').read(),
     classifiers = [
         "Development Status :: 4 - Beta",
         "Environment :: Plugins",
