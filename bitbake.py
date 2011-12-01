@@ -73,10 +73,10 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'comment': [
-            (r'^\s*#\s*', Comment, 'comment-body'),
+            (r'^\s*#', Comment, 'comment-body'),
         ],
         'comment-body': [
-            (r'TODO|FIXME|XXX', Generic.Emph),
+            (r'(\s*)(TODO|FIXME|XXX)', bygroups(Text, Generic.Emph)),
             (r'.*\n', Comment, '#pop'),
         ],
 
