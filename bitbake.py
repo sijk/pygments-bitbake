@@ -50,8 +50,8 @@ class BitbakeLexer(RegexLexer):
 
         'variable-definition': [
             (r'^(export)?(\s*)'                         # export
-             r'([\w\d.+/_-]+(?:_[${}\w\d.+/_-]+)?)'     # FILES_${PN}-dev
-             r'(?:(\[)([\w\d.+/_-]+)(\]))*(\s*)'        # [md5sum]
+             r'([\w.+/-]+(?:_[${}\w.+/-]+)?)'           # FILES_${PN}-dev
+             r'(?:(\[)([\w.+/-]+)(\]))*(\s*)'           # [md5sum]
              r'([:+.]=|=[+.]|\?\??=|=)(\s*)',           # += 
                 bygroups(Keyword.Type, Text, 
                          Name.Variable, 
@@ -81,7 +81,7 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'variable-expansion': [
-            (r'\$\{[\w\d.+/_-]+\}', Comment.PreProc),
+            (r'\$\{[\w.+/-]+\}', Comment.PreProc),
         ],
 
         'python-expansion': [
@@ -95,7 +95,7 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'shell-function': [
-            (r'^(fakeroot)?(\s*)([\w\d_-]+)(\s*)(\(\))(\s*)(\{)',
+            (r'^(fakeroot)?(\s*)([\w-]+)(\s*)(\(\))(\s*)(\{)',
                 bygroups(Keyword.Type, Text, Name.Function, Text,
                          Punctuation, Text, Punctuation),
                 'shell-function-body'),
@@ -106,7 +106,7 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'python-function': [
-            (r'^(python)(\s+)([\w\d_-]+)(\s*)(\(\))(\s*)(\{)',
+            (r'^(python)(\s+)([\w-]+)(\s*)(\(\))(\s*)(\{)',
                 bygroups(Keyword.Type, Text, Name.Function, Text,
                          Punctuation, Text, Punctuation),
                 'python-function-body'),
@@ -132,7 +132,7 @@ class BitbakeLexer(RegexLexer):
         'include-body': [
             include('string'),
             include('variable-expansion'),
-            (r'[\w\d.+_-]+', Name.Namespace),
+            (r'[\w.+-]+', Name.Namespace),
             (r'\n', Text, '#pop'),
             (r'\s', Text),
         ],
@@ -142,7 +142,7 @@ class BitbakeLexer(RegexLexer):
         ],
         'add-task-body': [
             (r'before|after', Keyword),
-            (r'[\w\d_-]+', Name),
+            (r'[\w-]+', Name),
             (r'\n', Text, '#pop'),
             (r'\s+', Text),
         ],
