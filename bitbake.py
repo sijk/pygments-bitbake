@@ -90,7 +90,8 @@ class BitbakeLexer(RegexLexer):
         'python-expansion-body': [
             (r'\}', Comment.PreProc, '#pop'),
             include('variable-expansion'),
-            (r'.*?(?=\$\{|\})', using(PythonLexer)),
+            (r'\\\n', String.Escape),
+            (r'.*?(?=\$\{|\}|\\\n)', using(PythonLexer)),
         ],
 
         'shell-function': [
