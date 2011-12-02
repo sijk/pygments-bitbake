@@ -135,8 +135,7 @@ class BitbakeLexer(RegexLexer):
         ],
         'include-body': [
             include('string'),
-            include('variable-expansion'),
-            (r'[\w.+-]+', Name.Namespace),
+            (r'[\w${}.+-]+', Name.Namespace),
             (r'\n', Text, '#pop'),
             (r'\s', Text),
         ],
