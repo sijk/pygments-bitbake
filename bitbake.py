@@ -95,9 +95,11 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'shell-function': [
-            (r'^(fakeroot)?(\s*)([\w-]+)(\s*)(\(\))(\s*)(\{)',
-                bygroups(Keyword.Type, Text, Name.Function, Text,
-                         Punctuation, Text, Punctuation),
+            (r'^(fakeroot)?(\s*)(?:(do_fetch|do_unpack|do_patch|do_configure|'
+             r'do_compile|do_populate_sysroot|do_stage|do_install|do_package|'
+             r'do_package_write)|([\w-]+))(\s*)(\(\))(\s*)(\{)',
+                bygroups(Keyword.Type, Text, Name.Builtin.Pseudo, Name.Function, 
+                         Text, Punctuation, Text, Punctuation),
                 'shell-function-body'),
         ],
         'shell-function-body': [
@@ -106,9 +108,11 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'python-function': [
-            (r'^(python)(\s+)([\w-]+)(\s*)(\(\))(\s*)(\{)',
-                bygroups(Keyword.Type, Text, Name.Function, Text,
-                         Punctuation, Text, Punctuation),
+            (r'^(python)(\s+)(?:(do_fetch|do_unpack|do_patch|do_configure|'
+             r'do_compile|do_populate_sysroot|do_stage|do_install|do_package|'
+             r'do_package_write)|([\w-]+))(\s*)(\(\))(\s*)(\{)',
+                bygroups(Keyword.Type, Text, Name.Builtin.Pseudo, Name.Function, 
+                         Text, Punctuation, Text, Punctuation),
                 'python-function-body'),
         ],
         'python-function-body': [
@@ -142,6 +146,9 @@ class BitbakeLexer(RegexLexer):
         ],
         'add-task-body': [
             (r'before|after', Keyword),
+            (r'do_fetch|do_unpack|do_patch|do_configure|do_compile|'
+             r'do_populate_sysroot|do_stage|do_install|do_package|'
+             r'do_package_write', Name.Builtin.Pseudo),
             (r'[\w-]+', Name),
             (r'\n', Text, '#pop'),
             (r'\s+', Text),
