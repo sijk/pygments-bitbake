@@ -85,8 +85,12 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'python-expansion': [
-            (r'(\$\{@)([^}]+)(\})', 
-                bygroups(Comment.PreProc, using(PythonLexer), Comment.PreProc)),
+            (r'\$\{@', Comment.PreProc, 'python-expansion-body'),
+        ],
+        'python-expansion-body': [
+            (r'\}', Comment.PreProc, '#pop'),
+            include('variable-expansion'),
+            (r'.*?(?=\$\{|\})', using(PythonLexer)),
         ],
 
         'shell-function': [
