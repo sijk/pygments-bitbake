@@ -117,7 +117,8 @@ class BitbakeLexer(RegexLexer):
         ],
         'python-function-body': [
             (r'^(\s*)(\})(\s*\n)', bygroups(Text, Punctuation, Text), '#pop'),
-            (r'.*\n', using(PythonLexer)),
+            include('variable-expansion'),
+            (r'.*?(?:(?=\$\{)|\n)', using(PythonLexer)),
         ],
 
         'python-def': [
@@ -125,7 +126,8 @@ class BitbakeLexer(RegexLexer):
         ],
         'python-def-body': [
             (r'^(?!\s)', Text, '#pop'),
-            (r'.*\n', using(PythonLexer)),
+            include('variable-expansion'),
+            (r'.*?(?:(?=\$\{)|\n)', using(PythonLexer)),
         ],
 
         'include': [
