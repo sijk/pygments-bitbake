@@ -50,7 +50,7 @@ class BitbakeLexer(RegexLexer):
 
         'variable-definition': [
             (r'^(export)?(\s*)'                         # export
-             r'([\w.+/-]+(?:_[${}\w.+/-]+)?)'           # FILES_${PN}-dev
+             r'([\w.+/-]+(?:[:_][${}\w.+/-]+)?)'           # FILES_${PN}-dev
              r'(?:(\[)([\w.+/-]+)(\]))*(\s*)'           # [md5sum]
              r'([:+.]=|=[+.]|\?\??=|=)(\s*)',           # += 
                 bygroups(Keyword.Type, Text, 
