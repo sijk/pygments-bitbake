@@ -40,6 +40,7 @@ class BitbakeLexer(RegexLexer):
         'root': [
             include('comment'),
             include('include'),
+            include('inherit'),
             include('variable-definition'),
             include('python-function'),
             include('shell-function'),
@@ -131,11 +132,22 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'include': [
-            (r'^(\s*)(include|require|inherit)(\s*)', 
+            (r'^(\s*)(include|require)(\s*)', 
                 bygroups(Text, Keyword.Namespace, Text), 
                 'include-body'),
         ],
+        'inherit': [
+            (r'^(\s*)(inherit)(\s*)', 
+                bygroups(Text, Keyword.Namespace, Text), 
+                'inherit-body'),
+        ],
         'include-body': [
+            include('string'),
+            (r'[\w${}.+-/]+', Name.Namespace),
+            (r'\n', Text, '#pop'),
+            (r'\s', Text),
+        ],
+        'inherit-body': [
             include('string'),
             (r'[\w${}.+-]+', Name.Namespace),
             (r'\n', Text, '#pop'),
