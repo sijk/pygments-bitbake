@@ -40,6 +40,7 @@ class BitbakeLexer(RegexLexer):
         'root': [
             include('comment'),
             include('include'),
+            include('inherit'),
             include('variable-definition'),
             include('python-function'),
             include('shell-function'),
@@ -97,7 +98,7 @@ class BitbakeLexer(RegexLexer):
         'shell-function': [
             (r'^(fakeroot)?(\s*)(?:(do_fetch|do_unpack|do_patch|do_configure|'
              r'do_compile|do_populate_sysroot|do_stage|do_install|do_package|'
-             r'do_package_write)|([\w${}-]+))(\s*)(\(\))(\s*)(\{)',
+             r'do_package_write)|([:_\w${}-]+))(\s*)(\(\))(\s*)(\{)',
                 bygroups(Keyword.Type, Text, Name.Builtin.Pseudo, Name.Function, 
                          Text, Punctuation, Text, Punctuation),
                 'shell-function-body'),
@@ -110,7 +111,7 @@ class BitbakeLexer(RegexLexer):
         'python-function': [
             (r'^(python)(\s+)(?:(do_fetch|do_unpack|do_patch|do_configure|'
              r'do_compile|do_populate_sysroot|do_stage|do_install|do_package|'
-             r'do_package_write)|([\w${}-]+))?(\s*)(\(\))(\s*)(\{)',
+             r'do_package_write)|([:_\w${}-]+))?(\s*)(\(\))(\s*)(\{)',
                 bygroups(Keyword.Type, Text, Name.Builtin.Pseudo, Name.Function, 
                          Text, Punctuation, Text, Punctuation),
                 'python-function-body'),
@@ -131,11 +132,22 @@ class BitbakeLexer(RegexLexer):
         ],
 
         'include': [
-            (r'^(\s*)(include|require|inherit)(\s*)', 
+            (r'^(\s*)(include|require)(\s*)', 
                 bygroups(Text, Keyword.Namespace, Text), 
                 'include-body'),
         ],
+        'inherit': [
+            (r'^(\s*)(inherit)(\s*)', 
+                bygroups(Text, Keyword.Namespace, Text), 
+                'inherit-body'),
+        ],
         'include-body': [
+            include('string'),
+            (r'[\w${}.+-/]+', Name.Namespace),
+            (r'\n', Text, '#pop'),
+            (r'\s', Text),
+        ],
+        'inherit-body': [
             include('string'),
             (r'[\w${}.+-]+', Name.Namespace),
             (r'\n', Text, '#pop'),
